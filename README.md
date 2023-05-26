@@ -19,19 +19,26 @@ O arquivo de entrada contém várias linhas. Na primeira linha são informados o
 
 #
 ## Estrutura
-- `graph_listadj.h`:
-- `graph_matrixadj.h`:
-- `func_listadj.c`:
-- `func_matrixadj.c`:
-  
+- `include`
+  - `graph_listadj.h`:
+  - `graph_matrixadj.h`:
+
+- `src`
+  - `func_listadj.c`:
+  - `func_matrixadj.c`:
+
+- `run`
+  - `main.c`:
+  - `txt-entrada.txt`:
+  - `txt-saida.txt`:
 
 #
 ## Compilar
 ~~~
-$ gcc main.c -o main -lm
+$ gcc run/main.c -o main -lm
 ~~~
 
 ## Executar
 ~~~
-./main txt-entrada.txt
+./main run/txt-entrada.txt
 ~~~

@@ -1,35 +1,26 @@
-#include "graph_listadj.h"
+#include"../include/graph_matrixadj.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-Node* createNode(int vertex, float weight) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->vertex = vertex;
-    newNode->weight = weight;
-    newNode->next = NULL;
-    return newNode;
-}
 
 Graph* createGraph(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     graph->vertices = vertices;
 
-    graph->adjLists = (Node**)malloc(vertices * sizeof(Node*));
+    // Alocar memória para a matriz de adjacências
+    graph->adjMatrix = (float**)malloc(vertices * sizeof(float*));
     for (int i = 0; i < vertices; i++) {
-        graph->adjLists[i] = NULL;
+        graph->adjMatrix[i] = (float*)malloc(vertices * sizeof(float));
+        for (int j = 0; j < vertices; j++) {
+            graph->adjMatrix[i][j] = INFINITY;  // inicialmente, não há arestas entre os vértices
+        }
     }
 
     return graph;
 }
 
 void addEdge(Graph* graph, int src, int dest, float weight) {
-    Node* newNode = createNode(dest, weight);
-    newNode->next = graph->adjLists[src];
-    graph->adjLists[src] = newNode;
-
-    newNode = createNode(src, weight);
-    newNode->next = graph->adjLists[dest];
-    graph->adjLists[dest] = newNode;
+    graph->adjMatrix[src][dest] = weight;
+    graph->adjMatrix[dest][src] = weight;  // considerando o grafo não direcionado
 }
 
 void dijkstra(Graph* graph, int startVertex, int endVertex, float* minPath) {
@@ -37,6 +28,7 @@ void dijkstra(Graph* graph, int startVertex, int endVertex, float* minPath) {
     float* dist = (float*)malloc(numVertices * sizeof(float));
     int* visited = (int*)malloc(numVertices * sizeof(int));
 
+    // Inicializar distâncias e visited
     for (int i = 0; i < numVertices; i++) {
         dist[i] = INFINITY;
         visited[i] = 0;
@@ -46,6 +38,7 @@ void dijkstra(Graph* graph, int startVertex, int endVertex, float* minPath) {
     for (int count = 0; count < numVertices - 1; count++) {
         int u = -1;
 
+        // Escolher o vértice de menor distância não visitado
         for (int v = 0; v < numVertices; v++) {
             if (!visited[v] && (u == -1 || dist[v] < dist[u]))
                 u = v;
@@ -53,15 +46,14 @@ void dijkstra(Graph* graph, int startVertex, int endVertex, float* minPath) {
 
         visited[u] = 1;
 
-        Node* neighbor = graph->adjLists[u];
-        while (neighbor != NULL) {
-            int v = neighbor->vertex;
-            if (!visited[v] && dist[u] + neighbor->weight < dist[v])
-                dist[v] = dist[u] + neighbor->weight;
-            neighbor = neighbor->next;
+        // Atualizar distâncias dos vértices adjacentes a u
+        for (int v = 0; v < numVertices; v++) {
+            if (!visited[v] && graph->adjMatrix[u][v] != INFINITY && dist[u] + graph->adjMatrix[u][v] < dist[v])
+                dist[v] = dist[u] + graph->adjMatrix[u][v];
         }
     }
 
+    // Armazenar a menor altura no caminho mínimo
     *minPath = dist[endVertex];
 
     free(dist);
