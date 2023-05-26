@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Realizar as consultas e determinar a maior carreta baú possível
-    FILE* outputFile = fopen("run/txt-saida.txt", "w");
+    FILE* outputFile = fopen("run/output.txt", "w");
     for (int i = 0; i < numQueries; i++) {
         int src, dest;
         fscanf(inputFile, "%d %d", &src, &dest);

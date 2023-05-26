@@ -29,8 +29,8 @@ O arquivo de entrada contém várias linhas. Na primeira linha são informados o
 
 - `run`
   - `main.c`:
-  - `txt-entrada.txt`:
-  - `txt-saida.txt`:
+  - `input.txt`:
+  - `output.txt`:
 
 #
 ## Compilar
@@ -40,5 +40,5 @@ $ gcc run/main.c -o main -lm
 
 ## Executar
 ~~~
-./main run/txt-entrada.txt
+$ ./main run/input.txt
 ~~~
