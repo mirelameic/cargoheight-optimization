@@ -32,6 +32,19 @@ void addEdge(Graph* graph, int src, int dest, float weight) {
     graph->adjLists[dest] = newNode;
 }
 
+void printGraph(Graph* graph) {
+    int i;
+    for (i = 0; i < graph->vertices; i++) {
+        Node* temp = graph->adjLists[i];
+        printf("V%d: ", i+1);
+        while (temp) {
+            printf("-> (%d, peso: %.2f) ", temp->vertex+1, temp->weight);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+
 void dijkstra(Graph* graph, int startVertex, int endVertex, float* minPath) {
     int numVertices = graph->vertices;
     float* dist = (float*)malloc(numVertices * sizeof(float));
