@@ -1,6 +1,59 @@
 #include"../include/graph_matrixadj.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
+
+void findWeight(Graph* graph, int src, int dest, float* maxPath);
+void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, float* minWeight, float* maxPath);
+Graph* createGraph(int vertices);
+void addEdge(Graph* graph, int src, int dest, float weight);
+void printGraph(Graph* graph);
+
+void findWeight(Graph* graph, int src, int dest, float* maxPath) {
+    bool* visited = (bool*)malloc(graph->vertices * sizeof(bool));
+    float* minWeight = (float*)malloc(graph->vertices * sizeof(float));
+
+    for (int i = 0; i < graph->vertices; i++) {
+        visited[i] = false;
+        minWeight[i] = INFINITY;
+    }
+
+    minWeight[src] = 0.0;
+    *maxPath = -INFINITY;
+
+    findWeightDFS(graph, src, dest, visited, minWeight, maxPath);
+
+    free(visited);
+    free(minWeight);
+}
+
+void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, float* minWeight, float* maxPath) {
+    visited[currentVertex] = true;
+
+    if (currentVertex == dest) {
+        float currentMin = INFINITY;
+        for (int i = 0; i < graph->vertices; i++) {
+            if (visited[i] && graph->adjMatrix[currentVertex][i] < currentMin) {
+                currentMin = graph->adjMatrix[currentVertex][i];
+            }
+        }
+        if (currentMin > *maxPath) {
+            *maxPath = currentMin;
+        }
+    } else {
+        for (int i = 0; i < graph->vertices; i++) {
+            if (!visited[i] && graph->adjMatrix[currentVertex][i] != INFINITY &&
+                graph->adjMatrix[currentVertex][i] < minWeight[i]) {
+                minWeight[i] = graph->adjMatrix[currentVertex][i];
+                findWeightDFS(graph, i, dest, visited, minWeight, maxPath);
+                minWeight[i] = INFINITY;
+            }
+        }
+    }
+
+    visited[currentVertex] = false;
+}
 
 Graph* createGraph(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
@@ -24,44 +77,13 @@ void addEdge(Graph* graph, int src, int dest, float weight) {
 void printGraph(Graph* graph) {
     int i, j;
     for (i = 0; i < graph->vertices; i++) {
-        printf("V%d: ", i+1);
+        printf("V%d: ", i);
         for (j = 0; j < graph->vertices; j++) {
             float weight = graph->adjMatrix[i][j];
             if (weight != INFINITY) {
-                printf("-> (%d, peso: %.2f) ", j+1, weight);
+                printf("-> (%d, peso: %.2f) ", j, weight);
             }
         }
         printf("\n");
     }
-}
-
-void dijkstra(Graph* graph, int startVertex, int endVertex, float* minPath) {
-    int numVertices = graph->vertices;
-    float* dist = (float*)malloc(numVertices * sizeof(float));
-    int* visited = (int*)malloc(numVertices * sizeof(int));
-
-    for (int i = 0; i < numVertices; i++) {
-        dist[i] = INFINITY;
-        visited[i] = 0;
-    }
-    dist[startVertex] = 0;
-
-    for (int count = 0; count < numVertices - 1; count++) {
-        int u = -1;
-
-        for (int v = 0; v < numVertices; v++) {
-            if (!visited[v] && (u == -1 || dist[v] < dist[u]))
-                u = v;
-        }
-
-        visited[u] = 1;
-        for (int v = 0; v < numVertices; v++) {
-            if (!visited[v] && graph->adjMatrix[u][v] != INFINITY && dist[u] + graph->adjMatrix[u][v] < dist[v])
-                dist[v] = dist[u] + graph->adjMatrix[u][v];
-        }
-    }
-    *minPath = dist[endVertex];
-
-    free(dist);
-    free(visited);
 }

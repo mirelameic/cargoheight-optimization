@@ -1,14 +1,15 @@
 #include "../include/graph_listadj.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
 
-Node* createNode(int vertex, float weight) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->vertex = vertex;
-    newNode->weight = weight;
-    newNode->next = NULL;
-    return newNode;
-}
+void findWeight(Graph* graph, int src, int dest, float* maxPath);
+void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, float* minWeight, float* maxPath);
+Graph* createGraph(int vertices);
+Node* createNode(int vertex, float weight);
+void addEdge(Graph* graph, int src, int dest, float weight);
+void printGraph(Graph* graph);
 
 Graph* createGraph(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
@@ -20,6 +21,14 @@ Graph* createGraph(int vertices) {
     }
 
     return graph;
+}
+
+Node* createNode(int vertex, float weight) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->vertex = vertex;
+    newNode->weight = weight;
+    newNode->next = NULL;
+    return newNode;
 }
 
 void addEdge(Graph* graph, int src, int dest, float weight) {
@@ -36,47 +45,60 @@ void printGraph(Graph* graph) {
     int i;
     for (i = 0; i < graph->vertices; i++) {
         Node* temp = graph->adjLists[i];
-        printf("V%d: ", i+1);
+        printf("V%d: ", i);
         while (temp) {
-            printf("-> (%d, peso: %.2f) ", temp->vertex+1, temp->weight);
+            printf("-> (%d, peso: %.2f) ", temp->vertex, temp->weight);
             temp = temp->next;
         }
         printf("\n");
     }
 }
 
-void dijkstra(Graph* graph, int startVertex, int endVertex, float* minPath) {
-    int numVertices = graph->vertices;
-    float* dist = (float*)malloc(numVertices * sizeof(float));
-    int* visited = (int*)malloc(numVertices * sizeof(int));
+void findWeight(Graph* graph, int src, int dest, float* maxPath) {
+    bool* visited = (bool*)malloc(graph->vertices * sizeof(bool));
+    float* minWeight = (float*)malloc(graph->vertices * sizeof(float));
 
-    for (int i = 0; i < numVertices; i++) {
-        dist[i] = INFINITY;
-        visited[i] = 0;
-    }
-    dist[startVertex] = 0;
-
-    for (int count = 0; count < numVertices - 1; count++) {
-        int u = -1;
-
-        for (int v = 0; v < numVertices; v++) {
-            if (!visited[v] && (u == -1 || dist[v] < dist[u]))
-                u = v;
-        }
-
-        visited[u] = 1;
-
-        Node* neighbor = graph->adjLists[u];
-        while (neighbor != NULL) {
-            int v = neighbor->vertex;
-            if (!visited[v] && dist[u] + neighbor->weight < dist[v])
-                dist[v] = dist[u] + neighbor->weight;
-            neighbor = neighbor->next;
-        }
+    // Inicialização dos arrays
+    for (int i = 0; i < graph->vertices; i++) {
+        visited[i] = false;
+        minWeight[i] = INT_MAX;
     }
 
-    *minPath = dist[endVertex];
+    findWeightDFS(graph, src, dest, visited, minWeight, maxPath);
 
-    free(dist);
     free(visited);
+    free(minWeight);
+}
+
+void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, float* minWeight, float* maxPath) {
+    visited[currentVertex] = true;
+
+    if (currentVertex == dest) {
+        // Atualiza o máximo caminho mínimo encontrado
+        float currentMin = INFINITY;
+        for (int i = 0; i < graph->vertices; i++) {
+            if (visited[i] && minWeight[i] < currentMin) {
+                currentMin = minWeight[i];
+            }
+        }
+        if (currentMin > *maxPath) {
+            *maxPath = currentMin;
+        }
+    } else {
+        Node* temp = graph->adjLists[currentVertex];
+        while (temp != NULL) {
+            int adjVertex = temp->vertex;
+            float weight = temp->weight;
+
+            if (!visited[adjVertex] && weight < minWeight[adjVertex]) {
+                minWeight[adjVertex] = weight;
+                findWeightDFS(graph, adjVertex, dest, visited, minWeight, maxPath);
+                minWeight[adjVertex] = INT_MAX;  // Restaura o peso máximo
+            }
+
+            temp = temp->next;
+        }
+    }
+
+    visited[currentVertex] = false;
 }

@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
             printf("Entrada incorreta.\n");
             return 1;
         }
-        addEdge(graph, src - 1, dest - 1, height);
+        addEdge(graph, src, dest, height);
         printf("%d %d %.1f\n", src, dest, height);
     }
     //printGraph(graph);
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
         };
         printf("%d %d\n", src, dest);
         float minPath;
-        dijkstra(graph, src - 1, dest - 1, &minPath);
+        findWeight(graph, src, dest, &minPath);
         fprintf(outputFile, "%.1f\n", minPath);
     }
 
