@@ -19,9 +19,6 @@ void findWeight(Graph* graph, int src, int dest, float* maxPath) {
         minWeight[i] = INFINITY;
     }
 
-    minWeight[src] = 0.0;
-    *maxPath = -INFINITY;
-
     findWeightDFS(graph, src, dest, visited, minWeight, maxPath);
 
     free(visited);
@@ -34,8 +31,8 @@ void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, flo
     if (currentVertex == dest) {
         float currentMin = INFINITY;
         for (int i = 0; i < graph->vertices; i++) {
-            if (visited[i] && graph->adjMatrix[currentVertex][i] < currentMin) {
-                currentMin = graph->adjMatrix[currentVertex][i];
+            if (visited[i] && minWeight[i] < currentMin) {
+                currentMin = minWeight[i];
             }
         }
         if (currentMin > *maxPath) {
@@ -43,8 +40,7 @@ void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, flo
         }
     } else {
         for (int i = 0; i < graph->vertices; i++) {
-            if (!visited[i] && graph->adjMatrix[currentVertex][i] != INFINITY &&
-                graph->adjMatrix[currentVertex][i] < minWeight[i]) {
+            if (!visited[i] && graph->adjMatrix[currentVertex][i] != INFINITY) {
                 minWeight[i] = graph->adjMatrix[currentVertex][i];
                 findWeightDFS(graph, i, dest, visited, minWeight, maxPath);
                 minWeight[i] = INFINITY;
