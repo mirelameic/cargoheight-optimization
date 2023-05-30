@@ -17,8 +17,11 @@ int main(int argc, char* argv[]) {
         printf("Entrada incorreta.\n");
         return 1;
     }
-    printf("%d %d %d\n", numVertices, numEdges, numQueries);
+    printf("Vertices: %d\nArestas: %d\nConsultas: %d", numVertices, numEdges, numQueries);
+    printf("\n");
 
+
+    printf("\nAdicionando arestas: \n");
     Graph* graph = createGraph(numVertices);
     int src, dest;
     float height;
@@ -30,7 +33,9 @@ int main(int argc, char* argv[]) {
         addEdge(graph, src, dest, height);
         printf("%d %d %.1f\n", src, dest, height);
     }
-    //printGraph(graph);
+    printf("\nGrafo: \n");
+    printGraph(graph);
+    printf("\n");
 
     FILE* outputFile = fopen("run/output.txt", "w");
     for (int i = 0; i < numQueries; i++) {
@@ -39,9 +44,11 @@ int main(int argc, char* argv[]) {
             printf("Entrada incorreta.\n");
             return 1;
         };
-        printf("%d %d\n", src, dest);
+        printf("\nConsulta: ");
+        printf("src: V%d dest: V%d\n", src, dest);
         float minPath;
         findWeight(graph, src, dest, &minPath);
+        printf("Resposta: %.1f\n", minPath);
         fprintf(outputFile, "%.1f\n", minPath);
     }
 

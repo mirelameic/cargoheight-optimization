@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-//#include <limits.h>
 
 void findWeight(Graph* graph, int src, int dest, float* maxPath);
 void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, float* minWeight, float* maxPath);
@@ -21,6 +20,18 @@ void findWeight(Graph* graph, int src, int dest, float* maxPath) {
     }
 
     findWeightDFS(graph, src, dest, visited, minWeight, maxPath);
+
+    float lowerLimit = 2.5;
+    float upperLimit = 4.5;
+
+    if (*maxPath < lowerLimit){
+        *maxPath = lowerLimit;
+    }else if (*maxPath > upperLimit){
+        *maxPath = upperLimit;
+    }else{
+        float interval = 0.5;
+        *maxPath = (int)((*maxPath - lowerLimit) / interval) * interval + lowerLimit;
+    }
 
     free(visited);
     free(minWeight);
