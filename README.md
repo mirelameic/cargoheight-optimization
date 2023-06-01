@@ -33,9 +33,10 @@ O arquivo de entrada contém várias linhas. Na primeira linha são informados o
   - `output.txt`:
 
 #
-## Compilar
+## Compilar (depende do include do main)
 ~~~
-$ gcc run/main.c -o main -lm
+$ gcc -o main run/main.c src/func_listadj.c
+$ gcc -o main run/main.c src/func_matrixadj.c
 ~~~
 
 ## Executar

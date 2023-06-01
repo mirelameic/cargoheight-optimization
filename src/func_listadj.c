@@ -1,14 +1,6 @@
 #include "../include/graph_listadj.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
-
-void findWeight(Graph* graph, int src, int dest, float* maxPath);
-void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, float* minWeight, float* maxPath);
-Graph* createGraph(int vertices);
-Node* createNode(int vertex, float weight);
-void addEdge(Graph* graph, int src, int dest, float weight);
-void printGraph(Graph* graph);
 
 void findWeight(Graph* graph, int src, int dest, float* maxPath) {
     bool* visited = (bool*)malloc(graph->vertices * sizeof(bool));

@@ -1,4 +1,7 @@
-#include "../src/func_listadj.c"
+#include "../include/graph_listadj.h"
+
+#include <stdlib.h>
+#include <stdio.h>
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
