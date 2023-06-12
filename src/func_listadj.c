@@ -1,65 +1,4 @@
 #include "../include/graph_listadj.h"
-#include <stdlib.h>
-#include <stdio.h>
-
-void findWeight(Graph* graph, int src, int dest, float* maxPath) {
-    bool* visited = (bool*)malloc(graph->vertices * sizeof(bool));
-    float* minWeight = (float*)malloc(graph->vertices * sizeof(float));
-
-    for (int i = 0; i < graph->vertices; i++) {
-        visited[i] = false;
-        minWeight[i] = INFINITY;
-    }
-
-    findWeightDFS(graph, src, dest, visited, minWeight, maxPath);
-
-    float lowerLimit = 2.5;
-    float upperLimit = 4.5;
-
-    if (*maxPath < lowerLimit){
-        *maxPath = lowerLimit;
-    }else if (*maxPath > upperLimit){
-        *maxPath = upperLimit;
-    }else{
-        float interval = 0.5;
-        *maxPath = (int)((*maxPath - lowerLimit) / interval) * interval + lowerLimit;
-    }
-
-    free(visited);
-    free(minWeight);
-}
-
-void findWeightDFS(Graph* graph, int currentVertex, int dest, bool* visited, float* minWeight, float* maxPath) {
-    visited[currentVertex] = true;
-
-    if (currentVertex == dest) {
-        float currentMin = INFINITY;
-        for (int i = 0; i < graph->vertices; i++) {
-            if (visited[i] && minWeight[i] < currentMin) {
-                currentMin = minWeight[i];
-            }
-        }
-        if (currentMin > *maxPath) {
-            *maxPath = currentMin;
-        }
-    } else {
-        Node* temp = graph->adjLists[currentVertex];
-        while (temp != NULL) {
-            int adjVertex = temp->vertex;
-            float weight = temp->weight;
-
-            if (!visited[adjVertex]) {
-                minWeight[adjVertex] = weight;
-                findWeightDFS(graph, adjVertex, dest, visited, minWeight, maxPath);
-                minWeight[adjVertex] = INFINITY;
-            }
-
-            temp = temp->next;
-        }
-    }
-
-    visited[currentVertex] = false;
-}
 
 Graph* createGraph(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
@@ -102,4 +41,26 @@ void printGraph(Graph* graph) {
         }
         printf("\n");
     }
+}
+
+bool isConnected(Graph* graph, int src, int dest){
+    Node* temp = graph->adjLists[src];
+    while (temp != NULL) {
+        if (temp->vertex == dest) {
+            return true;
+        }
+        temp = temp->next;
+    }
+    return false;
+}
+
+float getWeight(Graph* graph, int src, int dest){
+    Node* temp = graph->adjLists[src];
+    while (temp != NULL) {
+        if (temp->vertex == dest) {
+            return temp->weight;
+        }
+        temp = temp->next;
+    }
+    return INFINITY;
 }

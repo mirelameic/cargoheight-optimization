@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define INFINITY 999999
 
@@ -19,3 +21,5 @@ Graph* createGraph(int vertices);
 Node* createNode(int vertex, float weight);
 void addEdge(Graph* graph, int src, int dest, float weight);
 void printGraph(Graph* graph);
+bool isConnected(Graph* graph, int src, int dest);
+float getWeight(Graph* graph, int src, int dest);

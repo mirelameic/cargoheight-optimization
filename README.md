@@ -21,22 +21,49 @@ O arquivo de entrada contém várias linhas. Na primeira linha são informados o
 ## Estrutura
 - `include`
   - `graph_listadj.h`:
+    Declara a estrutura Node, que representa um nó em uma lista de adjacências.
+    Declara a estrutura Graph, que representa um grafo usando listas de adjacências.
+    Declara as funções relacionadas à manipulação do grafo, como createGraph, createNode, addEdge, printGraph, isConnected e getWeight.
   - `graph_matrixadj.h`:
+    Declara a estrutura Graph, que representa um grafo usando uma matriz de adjacências.
+    Declara as funções relacionadas à manipulação do grafo, como createGraph, addEdge, printGraph, isConnected e getWeight.
+  - `graph_func.h`:
+    Declara as funções relacionadas à lógica de negócio do programa (findWeightDFS e findWeight).
 
 - `src`
   - `func_listadj.c`:
+    Implementa as funções declaradas em graph_listadj.h para manipulação de um grafo representado por listas de adjacências.
   - `func_matrixadj.c`:
+    Implementa as funções declaradas em graph_matrixadj.h para manipulação de um grafo representado por uma matriz de adjacências.
+  - `graph_func.c`:
+    Implementa as funções relacionadas à lógica de negócio do programa.
+    Implementa a função findWeightDFS, que realiza uma busca em profundidade para encontrar o caminho máximo em um grafo.
+    Implementa a função findWeight, que chama a função findWeightDFS e ajusta o resultado dentro de um intervalo específico.
 
 - `run`
   - `main.c`:
+    No main, lê o nome do arquivo de entrada como argumento da linha de comando.
+    Abre o arquivo de entrada e verifica se foi aberto com sucesso.
+    Lê o número de vértices, arestas e consultas do arquivo de entrada.
+    Imprime o número de vértices, arestas e consultas lidos.
+    Cria um grafo usando a função createGraph.
+    Adiciona as arestas ao grafo usando a função addEdge.
+    Imprime o grafo usando a função printGraph.
+    Abre um arquivo de saída.
+    Para cada consulta, lê os vértices de origem e destino e chama a função findWeight para encontrar o caminho máximo.
+    Imprime a resposta da consulta.
+    Escreve a resposta no arquivo de saída.
+    Fecha os arquivos de entrada e saída.
   - `input.txt`:
+    Arquivo de entrada.
   - `output.txt`:
+    Arquivo de saída.
 
 #
-## Compilar (depende do include do main)
+## Compilar (depende do include do arquivo include/graph_func.h)
 ~~~
-$ gcc -o main run/main.c src/func_listadj.c
-$ gcc -o main run/main.c src/func_matrixadj.c
+$ gcc -o main run/main.c src/func_listadj.c src/graph_func.c
+$ gcc -o main run/main.c src/func_matrixadj.c src/graph_func.c
 ~~~
 
 ## Executar
