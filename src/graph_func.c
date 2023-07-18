@@ -37,17 +37,34 @@ void findWeight(Graph* graph, int src, int dest, float* maxPath) {
 
     findWeightDFS(graph, src, dest, visited, minWeight, maxPath);
 
-    float lowerLimit = 2.5;
-    float upperLimit = 4.5;
+    // not working properly:
+    
+    // float lowerLimit = 2.5;
+    // float upperLimit = 4.5;
 
-    if (*maxPath < lowerLimit) {
-        *maxPath = lowerLimit;
-    } else if (*maxPath > upperLimit) {
-        *maxPath = upperLimit;
-    } else {
-        float interval = 0.5;
-        *maxPath = (int)((*maxPath - lowerLimit) / interval) * interval + lowerLimit;
-    }
+    // if (*maxPath < lowerLimit) {
+    //     *maxPath = lowerLimit;
+    // } else if (*maxPath > upperLimit) {
+    //     *maxPath = upperLimit;
+    // } else {
+    //     float interval = 0.5;
+    //     *maxPath = (int)((*maxPath - lowerLimit) / interval) * interval + lowerLimit;
+    // }
+
+
+    if (*maxPath <= 2.5) {
+        *maxPath = 2.5;
+    } else if (*maxPath <= 3.4) {
+        *maxPath = 3.0;
+    } else if (*maxPath <= 3.9) {
+        *maxPath = 3.5;
+    } else if (*maxPath <= 4.5) {
+        *maxPath = 4.0;
+    } else if (*maxPath <= 4.9) {
+        *maxPath = 4.5;
+    } else if (*maxPath >= 5.0){
+        *maxPath = 5.0;
+    }  
 
     free(visited);
     free(minWeight);

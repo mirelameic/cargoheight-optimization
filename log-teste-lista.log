@@ -1,0 +1,78 @@
+**************************************************
+Passo[1]: Compilação arquivo C
+**************************************************
+
+>>>>>>>>>>>>>>> Limpa diretório
+==>/home/hermonfa/Downloads/ACH2024_1SEM2023_EP1/Mirela-Mei-Costa_17246249/ep1_11208392/ep1_matriz_11208392.exe
+==>/home/hermonfa/Downloads/ACH2024_1SEM2023_EP1/Mirela-Mei-Costa_17246249/ep1_11208392/entrada.txt
+==>/home/hermonfa/Downloads/ACH2024_1SEM2023_EP1/Mirela-Mei-Costa_17246249/ep1_11208392/saida.txt
+
+RESULTADO ==> 3 arquivo(s) removido(s)
+
+>>>>>>>>>>>>>>> Compilação
+Linha de comando:
+make ep1_lista_11208392.exe
+
+COMPILAÇÃO ==> OK
+
+**************************************************
+Passo[2]: Testes
+**************************************************
+
+
+>>>>>>>>>>>>>>> Teste[1] (Ep1 Lista) 
+==> Qtdade.Linhas
+[OK][ 0.00]:Quantidade de linhas do arquivo
+==> Linha 1
+[OK][10.00]:(esperado) 4.0 == (gerado) 4.0
+==> Linha 2
+[OK][10.00]:(esperado) 4.5 == (gerado) 4.5
+==> Linha 3
+[OK][10.00]:(esperado) 4.0 == (gerado) 4.0
+==> Linha 4
+[OK][10.00]:(esperado) 4.0 == (gerado) 4.0
+
+Pontuação média das linhas: 10.00
+
+Pontuação do arquivo (Qtdade linhas + Conteúdo linhas): 10.00
+
+Linha de comando[OK]:
+./ep1_lista_11208392.exe entrada.txt
+
+Arquivo entrada padrão:
+8 11 4
+0 1 4.0
+0 3 4.3
+1 2 3.8
+1 3 5.5
+2 3 3.3
+3 4 5.5
+4 5 4.5
+4 6 4.8
+4 7 4.0
+5 7 3.9
+6 7 4.2
+0 7
+1 6
+1 7
+6 7
+
+Arquivo saída padrão:
+4.0
+4.5
+4.0
+4.0
+
+Arquivo saída gerado:
+4.0
+4.5
+4.0
+4.0
+**************************************************
+Resultado Final
+**************************************************
+
+Testes unitários:
+	Teste[1]-ep1 lista                         : 10.00
+
+Média EP parc (lista): 10.00
