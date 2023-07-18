@@ -42,7 +42,7 @@ O arquivo de entrada contém várias linhas. Na primeira linha são informados o
 
 - `run`
   - `main.c`:
-    No main, lê o nome do arquivo de entrada como argumento da linha de comando.
+    Lê o nome do arquivo de entrada como argumento da linha de comando.
     Abre o arquivo de entrada e verifica se foi aberto com sucesso.
     Lê o número de vértices, arestas e consultas do arquivo de entrada.
     Imprime o número de vértices, arestas e consultas lidos.
